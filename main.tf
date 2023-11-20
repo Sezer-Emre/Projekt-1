@@ -11,11 +11,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_default_vpc" "default" {
-  tags = {
-    Name = "Default VPC"
-  }
-}
+# resource "aws_default_vpc" "default" {
+#   tags = {
+#     Name = "Default VPC"
+#   }
+# }
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -38,6 +38,8 @@ resource "aws_instance" "mein_VM" {
   instance_type = "t2.micro"
   key_name = "Firstkey"
   vpc_security_group_ids = [aws_security_group.Proje_1_SG.id] #Degistir dene
+  subnet_id   = aws_subnet.team1_publicsubnet.id
+  
 
   tags = {
     Name = "Proje_team_1"
@@ -47,7 +49,7 @@ resource "aws_instance" "mein_VM" {
 resource "aws_security_group" "Proje_1_SG" {
   name        = "Proje_1_SG"
   description = "SSH,HTTP,HTTPS allow"
-  vpc_id      = aws_default_vpc.default.id
+  vpc_id      = aws_vpc.team1_vpc.id
 
   ingress {
     description      = "HTTPS"
