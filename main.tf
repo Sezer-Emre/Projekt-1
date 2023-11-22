@@ -97,3 +97,5 @@ output "web_server_url" {
 output "ssh_command" {
   value = "ssh -i ${var.user_name}.pem ubuntu@${aws_instance.mein_VM.public_ip}"
 }
+
+#TODOS: userdata.sh and key-pair resource
