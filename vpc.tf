@@ -1,5 +1,5 @@
 resource "aws_vpc" "team1_vpc" {
-  cidr_block       = "10.0.0.0/16"
+  cidr_block       = var.vpc_cidr_block
 
   tags = {
     Name = "team1_vpc"
@@ -8,7 +8,7 @@ resource "aws_vpc" "team1_vpc" {
 
 resource "aws_subnet" "team1_publicsubnet" {
   vpc_id     = aws_vpc.team1_vpc.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = var.public_subnet_cidr_block
   map_public_ip_on_launch = true
 
 
@@ -19,7 +19,7 @@ resource "aws_subnet" "team1_publicsubnet" {
 
 resource "aws_subnet" "team1_privatesubnet" {
   vpc_id     = aws_vpc.team1_vpc.id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = var.private_subnet_cidr_block
   map_public_ip_on_launch = false
 
   tags = {

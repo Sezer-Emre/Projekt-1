@@ -1,15 +1,15 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.25.0"
-    }
-  }
-}
+# terraform {
+#   required_providers {
+#     aws = {
+#       source = "hashicorp/aws"
+#       version = "5.25.0"
+#     }
+#   }
+# }
 
-provider "aws" {
-  region = "us-east-1"
-}
+# provider "aws" {
+#   region = var.region
+# }
 
 # resource "aws_default_vpc" "default" {
 #   tags = {
@@ -35,10 +35,11 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "mein_VM" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  key_name = "Firstkey"
+  instance_type = var.instance_type
+  key_name = var.user_name
   vpc_security_group_ids = [aws_security_group.Proje_1_SG.id] #Degistir dene
   subnet_id   = aws_subnet.team1_publicsubnet.id
+  user_data = file("./script.sh")
   
 
   tags = {
@@ -84,7 +85,15 @@ resource "aws_security_group" "Proje_1_SG" {
 
 }
 
-output "instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.mein_VM.public_ip
+# output "instance_public_ip" {
+#   description = "Public IP address of the EC2 instance"
+#   value       = aws_instance.mein_VM.public_ip
+# }
+
+output "web_server_url" {
+  value = "http://${aws_instance.mein_VM.public_ip}"
+}
+
+output "ssh_command" {
+  value = "ssh -i ${var.user_name}.pem ubuntu@${aws_instance.mein_VM.public_ip}"
 }
