@@ -25,7 +25,7 @@ resource "aws_iam_policy" "Grafana_policy" {
   description = "Example IAM policy"
   
   # JSON dosyasının içeriğini al ve IAM politikası olarak kullan
-  policy = file("/home/ec2-user/Projekt-1/user_data_file/policy.json")    ## path degistirebilirim
+  policy = file("./user_data_file/policy.json")    ## path degistirebilirim
 }
 
 resource "aws_iam_role_policy_attachment" "example_attachment" {            # Bu kisim ile policy Role bagliyoruz.
