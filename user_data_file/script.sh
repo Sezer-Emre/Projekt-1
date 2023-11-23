@@ -19,4 +19,3 @@ apt install git-all
 git version
 apt install -y nginx
 service nginx start
-
