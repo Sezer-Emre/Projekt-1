@@ -1,4 +1,15 @@
 
+data "aws_ami" "centos" {          ## Bu sekilde de amazon kernel 5.10 oluyor.
+  most_recent = true    
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-kernel-5.*-x86_64-gp2"]        # amazon/amzn2-ami-kernel-5.10-hvm-2.0.20231116.0-x86_64-gp2
+  }
+}
+
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -16,56 +27,24 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "mein_VM" {
-  ami           = data.aws_ami.ubuntu.id
+  count         = 2
+  ami           = count.index == 0 ? data.aws_ami.ubuntu.id  : data.aws_ami.centos.id  # data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   key_name = var.user_name
   vpc_security_group_ids = [aws_security_group.Proje_1_SG.id] #Degistir dene
   subnet_id   = aws_subnet.team1_publicsubnet.id
-  user_data = file("./script.sh")
-  
+  iam_instance_profile = count.index == 1 ? aws_iam_instance_profile.test_profile.name : null  ## Ikinci Ec2 icin
+  #user_data     = var.user_data_list[count.index] #user_data = file("./script.sh")
+  #user_data     = count.index == 0 ? data.ubuntu.user_data_1.rendered : data.grafana.user_data_2.rendered
+  user_data = count.index == 0 ? file("./user_data_file/script.sh") : file("./user_data_file/grafana_script.sh")
+
 
   tags = {
-    Name = "Proje_team_1"
+    Name = var.instance_name[count.index]
   }
 }
 
-resource "aws_security_group" "Proje_1_SG" {
-  name        = "Proje_1_SG"
-  description = "SSH,HTTP,HTTPS allow"
-  vpc_id      = aws_vpc.team1_vpc.id
 
-  ingress {
-    description      = "HTTPS"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description      = "HTTP"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description      = "SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-}
 
 
 

@@ -23,3 +23,17 @@ variable "private_subnet_cidr_block" {
   description = "CIDR for the private subnet" 
   default     = "10.0.2.0/24"
 }
+
+variable "server_name" {
+  default = [
+    "ubuntu","ec2-user"
+  ]
+}
+
+variable "instance_name" {
+  default = [
+    "ubuntu-nginx","centos-grafana"
+  ]
+}
+
+
