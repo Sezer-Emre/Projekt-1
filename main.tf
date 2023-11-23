@@ -1,21 +1,5 @@
-# terraform {
-#   required_providers {
-#     aws = {
-#       source = "hashicorp/aws"
-#       version = "5.25.0"
-#     }
-#   }
-# }
 
-# provider "aws" {
-#   region = var.region
-# }
 
-# resource "aws_default_vpc" "default" {
-#   tags = {
-#     Name = "Default VPC"
-#   }
-# }
 
 data "aws_ami" "ubuntu" {
   most_recent = true
