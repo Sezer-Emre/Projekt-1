@@ -2,7 +2,7 @@
 #   tags = {
 #     Name = "Default VPC"
 #   }
-# }
+# } ..
 
 resource "aws_vpc" "team1_vpc" {
   cidr_block       = var.vpc_cidr_block
