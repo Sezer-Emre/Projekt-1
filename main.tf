@@ -37,6 +37,7 @@ resource "aws_instance" "mein_VM" {
   #user_data     = var.user_data_list[count.index] #user_data = file("./script.sh")
   #user_data     = count.index == 0 ? data.ubuntu.user_data_1.rendered : data.grafana.user_data_2.rendered
   user_data = count.index == 0 ? file("./user_data_file/script.sh") : file("./user_data_file/grafana_script.sh")
+  depends_on = [ aws_key_pair.Mykeypair ]
 
 
   tags = {

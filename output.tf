@@ -31,6 +31,7 @@ output "centos_url" {
       "Prometheus ID si: http://${i.public_ip}:9090",  # İkinci EC2'nin public IP'sine 9090 portu ekleyin
       "Grafana ID si: http://${i.public_ip}:3000"   # İkinci EC2'nin public IP'sine 3000 portu ekleyin
     ] : null
+    if idx == 1
   ]
 }
 
