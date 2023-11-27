@@ -1,5 +1,5 @@
 variable "user_name" {
-  description = "Kullanıcı adı"
+  description = "Enter your name: "
 }
 
 variable "region" {
